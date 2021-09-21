@@ -1,4 +1,6 @@
 '''
+Code by cameron.albin & christopher.vandervoort
+
 Functions:
 - printBoard - input: board - output: None
 - didLastMoveWinGame - input: board,pos,whosTurn - output: boolean
@@ -6,13 +8,12 @@ Functions:
 - playGame - input: None - output: winner(int of -1 , 0, or 1)
 - placePiece - input: board,whosTurn,column - output: pos
 
-Functions to add/import:
-- bot generator
-- bot column ranker
-
-
-
+Imported Functions:
+- botBuildAndRun.createBotWeights() - input: None - output: botWeights
+- botBuildAndRun.runLayer - inputs: boardInput,bot - outputs: columnPreferences
 '''
+
+import botBuildAndRun
 
 def printBoard(board):
     for row in range(6):
@@ -87,7 +88,6 @@ def didLastMoveWinGame(board,pos,whosTurn):
 
 def playGameOne(bot=None):
     "WELCOME TO PLAYER ONE GAME"
-    print(bot)
     whosTurn = 1
     board = [0] * 42
     turnCount = 0
@@ -100,6 +100,7 @@ def playGameOne(bot=None):
             if bot == None:
                 column_list = [3,2,4,1,5,0,6]
             else:
+                column_list = botBuildAndRun.runBot(board,bot)
                 pass  # turn this into cam's methods
             while board[column_list[0]] != 0:
                 column_list.pop(0)
@@ -144,5 +145,6 @@ def placePiece(board,whosTurn,column):
 
     return pos
 
+bot = botBuildAndRun.createBotWeights()
 
-playGameOne()
+playGameOne(bot)
