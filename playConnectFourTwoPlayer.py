@@ -14,6 +14,7 @@ def printBoard(board):
         print(output)
     print("-"*29)
     print("")
+    return
 
 def newMove(board,whosTurn):
     if whosTurn == 1:
