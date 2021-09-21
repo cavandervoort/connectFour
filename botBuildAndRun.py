@@ -34,6 +34,21 @@ def createBotWeights():
     #access single weight through botWeights[layerNum][nodeNum][nextNodeNum]
     return botWeights
 
+def crossParents(bot1,bot2):
+    newBot = []
+    for layerNum in range(len(bot1)):
+        newLayer = []
+        for nodeNum in range(len(bot1[layerNum])):
+            newNode = []
+            for weightNum in range(len(bot1[layerNum][nodeNum])):
+                parentWeights = [bot1[layerNum][nodeNum][weightNum], bot2[layerNum][nodeNum][weightNum]]
+                newWeight = random.choice(parentWeights)
+                if random.uniform(0,1) <= 0.02:
+                    newWeight += random.uniform(-.3,.3)
+                newNode += [newWeight]
+            newLayer += [newNode]
+        newBot += [newLayer]
+    return newBot
 
 def runLayer(layerInputs,layer):
     layerOutputs = [0]*len(layer[0])
@@ -43,12 +58,9 @@ def runLayer(layerInputs,layer):
     return layerOutputs
 
 def runBot(boardInput,bot):
-    layer = bot[0]
-    BLayerInputs = runLayer(boardInput,layer)
-    layer = bot[1]
-    CLayerInputs = runLayer(BLayerInputs,layer)
-    layer = bot[2]
-    boardOutputs = runLayer(CLayerInputs,layer)
+    BLayerInputs = runLayer(boardInput,bot[0])
+    CLayerInputs = runLayer(BLayerInputs,bot[1])
+    boardOutputs = runLayer(CLayerInputs,bot[2])
 
     sortedOutputs = sorted(boardOutputs,reverse=True)
     columnPreferences = []
