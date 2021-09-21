@@ -38,6 +38,25 @@ def createBotWeights():
     return botWeights
 
 
+
+def crossParents(bot1,bot2):
+    newBot = []
+    for layerNum in range(len(bot1)):
+        newLayer = []
+        for nodeNum in range(len(bot1[layerNum])):
+            newNode = []
+            for weightNum in range(len(bot1[layerNum][nodeNum])):
+                parentWeights = [bot1[layerNum][nodeNum][weightNum], bot2[layerNum][nodeNum][weightNum]]
+                newWeight = random.choice(parentWeights)
+                if random.uniform(0,1) <= 0.02:
+                    newWeight += random.uniform(-.3,.3)
+                newNode += [newWeight]
+            newLayer += [newNode]
+        newBot += [newLayer]    
+    return newBot
+
+
+
 def runLayer(layerInputs,layer):
     layerOutputs = [0]*len(layer[0])
     for i in range(len(layerInputs)):
@@ -58,11 +77,14 @@ def runBot(boardInput,bot):
     return columnPreferences
 
 
+
 #Generating inputs and random bot then testing runBot method
 boardInputs = []
 for x in range(42):
     boardInputs += [random.choice([-1,0,1])]
 
-bot1 = createBotWeights()  
-print(runBot(boardInputs,bot1))
+bot1 = createBotWeights() 
+bot2 = createBotWeights()
+childBot = crossParents(bot1,bot2)
+print(bot1[0][0],'\n\n',bot2[0][0],'\n\n',childBot[0][0])
 
