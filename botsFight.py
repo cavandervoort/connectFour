@@ -1,6 +1,7 @@
 import botBuildAndRun
 import playConnectFourBotsOnly
 import random
+import saveAndOpenFunctions
 
 def buildBots(numBots):
     bots = []
@@ -46,32 +47,25 @@ def printAFight(botA,botB,day):
     print(f"\nhere is a sample fight from day {day}:\n")
     playConnectFourBotsOnly.playGameBots(botA,botB,True)
 
-
 import time
 start = time.time()
 
 numBots = 100
-bots = buildBots(numBots)
+
+bots = buildBots(numBots) #if building new set of bots
+#bots = saveAndOpenFunctions.loadBots('savedBots.pkl') #if saving past bots
 print(f'built bots in {time.time() - start} seconds')
 
-days = 201
+days = 2
 for day in range(days):
     if day % 1 == 0:
-        print("inputs to print a day")
-        print(len(bots[0]))
-        print(len(bots[1]))
-        print(day)
-        print("")
         printAFight(bots[0],bots[1],day)
         print(f'Day {day} starting at {time.time() - start} seconds')
     parentBots = fightAndSortBots(bots)[:numBots//10]
     bots = buildNextGenBots(parentBots,numBots)
 
-
 print("DONE")
-
-
-
+#saveAndOpenFunctions.saveBots(bots,'savedBots.pkl') #if want to save bots
 
 
 
