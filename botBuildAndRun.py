@@ -55,6 +55,9 @@ def runLayer(layerInputs,layer):
     for i in range(len(layerInputs)):
         for o in range(len(layerOutputs)):
             layerOutputs[o] += layerInputs[i]*layer[i][o]
+    if len(layerOutputs) != 7:
+        for o in range(len(layerOutputs)):
+            layerOutputs[o] = max(0,layerOutputs[o])
     return layerOutputs
 
 def runBot(boardInput,bot):
@@ -65,6 +68,8 @@ def runBot(boardInput,bot):
     sortedOutputs = sorted(boardOutputs,reverse=True)
     columnPreferences = []
     for x in range(len(boardOutputs)):
-        columnPreferences += [boardOutputs.index(sortedOutputs[x])]
+        pos = boardOutputs.index(sortedOutputs[x])
+        columnPreferences.append(pos)
+        boardOutputs[pos] = -1000
 
     return columnPreferences
