@@ -46,6 +46,7 @@ def printAFight(botA,botB,day):
     print(f"\nhere is a sample fight from day {day}:\n")
     playConnectFourBotsOnly.playGameBots(botA,botB,True)
 
+
 import time
 start = time.time()
 
@@ -53,10 +54,15 @@ numBots = 100
 bots = buildBots(numBots)
 print(f'built bots in {time.time() - start} seconds')
 
-days = 20
+days = 201
 for day in range(days):
     if day % 1 == 0:
-        printAFight(bots[0],bots[1],day)
+        print("inputs to print a day")
+        print(len(bots[0]))
+        print(len(bots[1]))
+        print(day)
+        print("")
+        printAFight(bots[0],bot[1],day)
         print(f'Day {day} starting at {time.time() - start} seconds')
     parentBots = fightAndSortBots(bots)[:numBots//10]
     bots = buildNextGenBots(parentBots,numBots)
