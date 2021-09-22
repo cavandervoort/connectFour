@@ -62,7 +62,7 @@ for day in range(days):
         print(len(bots[1]))
         print(day)
         print("")
-        printAFight(bots[0],bot[1],day)
+        printAFight(bots[0],bots[1],day)
         print(f'Day {day} starting at {time.time() - start} seconds')
     parentBots = fightAndSortBots(bots)[:numBots//10]
     bots = buildNextGenBots(parentBots,numBots)
