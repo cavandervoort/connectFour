@@ -90,7 +90,7 @@ def placePiece(board,whosTurn,column):
 
     return pos
 
-def playGameBots(botA,botB):
+def playGameBots(botA,botB,shouldPrint):
     "WELCOME TO THE BOTS ONLY GAME"
     whosTurn = 1
     board = [0] * 42
@@ -114,20 +114,12 @@ def playGameBots(botA,botB):
         pos = placePiece(board,whosTurn,column)
         board[pos] = whosTurn
         if didLastMoveWinGame(board,pos,whosTurn):
-            printBoard(board)
-            if whosTurn == 1: piece = "X"
-            else: piece = "O"
-            print(f"\nGame over!\n{piece} wins")
+            if shouldPrint:
+                printBoard(board)
             return whosTurn
         whosTurn *= -1
         turnCount += 1
         if turnCount == 42:
-            printBoard(board)
-            print("\nBoard is full--no one wins")
+            if shouldPrint:
+                printBoard(board)
             return 0
-
-for _ in range(10):
-    botA = botBuildAndRun.createBotWeights()
-    botB = botBuildAndRun.createBotWeights()
-
-    print(playGameBots(botA,botB))
