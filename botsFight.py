@@ -42,24 +42,25 @@ def buildNextGenBots(parentBots,numBots):
 
     return parentBots + newBots
 
-def printAFight(botA,botB):
-    print("\nhere is a sample fight from the day:\n")
+def printAFight(botA,botB,day):
+    print(f"\nhere is a sample fight from day {day}:\n")
     playConnectFourBotsOnly.playGameBots(botA,botB,True)
 
 import time
 start = time.time()
 
-numBots = 50
+numBots = 100
 bots = buildBots(numBots)
 print(f'built bots in {time.time() - start} seconds')
 
-days = 500
+days = 20
 for day in range(days):
-    if days % 10 == 0:
-        printAFight(bots[0],bots[1])
+    if day % 1 == 0:
+        printAFight(bots[0],bots[1],day)
+        print(f'Day {day} starting at {time.time() - start} seconds')
     parentBots = fightAndSortBots(bots)[:numBots//10]
     bots = buildNextGenBots(parentBots,numBots)
-    print(f'finished day {day} in {time.time() - start} seconds')
+
 
 print("DONE")
 
