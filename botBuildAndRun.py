@@ -48,15 +48,25 @@ def crossParents(bot1,bot2):
     newBot = []
     for layerNum in range(len(bot1)):
         newLayer = []
-        for nodeNum in range(len(bot1[layerNum])):
-            newNode = []
-            for weightNum in range(len(bot1[layerNum][nodeNum])):
-                parentWeights = [bot1[layerNum][nodeNum][weightNum], bot2[layerNum][nodeNum][weightNum]]
+        #if XtoY Layer create new node list
+        if type(bot1[layerNum][0]) == list:
+            for nodeNum in range(len(bot1[layerNum])):             
+                newNode = []
+                for weightNum in range(len(bot1[layerNum][nodeNum])):
+                    parentWeights = [bot1[layerNum][nodeNum][weightNum], bot2[layerNum][nodeNum][weightNum]]
+                    newWeight = random.choice(parentWeights)
+                    if random.uniform(0,1) <= 0.02:
+                        newWeight += random.uniform(-.3,.3)
+                    newNode += [newWeight]
+                newLayer += [newNode]
+        #if XLayerBiases create new bias list    
+        if type(bot1[layerNum][0]) != list: 
+            for weightNum in range(len(bot1[layerNum])):
+                parentWeights = [bot1[layerNum][weightNum], bot2[layerNum][weightNum]]
                 newWeight = random.choice(parentWeights)
                 if random.uniform(0,1) <= 0.02:
-                    newWeight += random.uniform(-.3,.3)
-                newNode += [newWeight]
-            newLayer += [newNode]
+                    newWeight += random.uniform(-.3,.3) 
+                newLayer += [newWeight]
         newBot += [newLayer]
     return newBot
 
@@ -92,13 +102,14 @@ def runBot(boardInput,bot):
 
     return columnPreferences
 
-'''
-boardInput = []
-for x in range(42):
-    boardInput += [random.choice([0])]
-bot = createBotWeights()
-runBot(boardInput,bot)
-'''
+
+#boardInput = []
+#for x in range(42):
+#    boardInput += [random.choice([0])]
+#daddy = createBotWeights()
+#mommy = createBotWeights()
+#bot = crossParents(daddy,mommy)
+#print(runBot(boardInput,bot))
 
 
 
