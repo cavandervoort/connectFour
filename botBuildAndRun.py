@@ -24,13 +24,23 @@ def createBotWeights():
             node = initializeNode(numOutputs)
             layer += [node]
         return layer
-
+    
+    #create list of layer biases
+    def initializeBiases(numNodes):
+        layerBiases = []
+        for x in range(numNodes):
+            layerBiases += [random.uniform(-1,1)]
+        return layerBiases
+        
     #create list of all layers
-    ALayer = initializeLayer(42,16)
-    BLayer = initializeLayer(16,16)
-    CLayer = initializeLayer(16,7)
+    AtoBLayer = initializeLayer(42,16)
+    BtoCLayer = initializeLayer(16,16)
+    CtoDLayer = initializeLayer(16,7)
+    BLayerBiases = initializeBiases(16)
+    CLayerBiases = initializeBiases(16)
+    DLayerBiases = initializeBiases(7)
 
-    botWeights = [ALayer,BLayer,CLayer]
+    botWeights = [AtoBLayer,BtoCLayer,CtoDLayer,BLayerBiases,CLayerBiases,DLayerBiases]
     #access single weight through botWeights[layerNum][nodeNum][nextNodeNum]
     return botWeights
 
@@ -50,20 +60,31 @@ def crossParents(bot1,bot2):
         newBot += [newLayer]
     return newBot
 
-def runLayer(layerInputs,layer):
-    layerOutputs = [0]*len(layer[0])
+def layerOutputToNextLayerInput(layerOutputs,layer):
+    nextLayerInputs = [0]*len(layer[0])
+    for o in range(len(layerOutputs)):
+        for i in range(len(nextLayerInputs)):
+            nextLayerInputs[i] += layerOutputs[o]*layer[o][i]
+#    if len(nextLayerInputs) != 7:
+#        for i in range(len(nextlayerInputs)):
+#            nextlayerInputs[i] = max(0,nextlayerInputs[i])
+    return nextLayerInputs
+
+def layerInputToLayerOutput(layerInputs,layerBiases):
     for i in range(len(layerInputs)):
-        for o in range(len(layerOutputs)):
-            layerOutputs[o] += layerInputs[i]*layer[i][o]
-    if len(layerOutputs) != 7:
-        for o in range(len(layerOutputs)):
-            layerOutputs[o] = max(0,layerOutputs[o])
-    return layerOutputs
+        layerInputs[i] += layerBiases[i]
+        if len(layerBiases) != 7:
+            layerInputs[i] = max(0,layerInputs[i])
+    layerOutputs = layerInputs
+    return layerOutputs            
 
 def runBot(boardInput,bot):
-    BLayerInputs = runLayer(boardInput,bot[0])
-    CLayerInputs = runLayer(BLayerInputs,bot[1])
-    boardOutputs = runLayer(CLayerInputs,bot[2])
+    BLayerInputs = layerOutputToNextLayerInput(boardInput,bot[0])
+    BLayerOutputs = layerInputToLayerOutput(BLayerInputs,bot[3])   
+    CLayerInputs = layerOutputToNextLayerInput(BLayerOutputs,bot[1])
+    CLayerOutputs = layerInputToLayerOutput(CLayerInputs,bot[4])   
+    DLayerInputs = layerOutputToNextLayerInput(CLayerOutputs,bot[2])
+    boardOutputs = layerInputToLayerOutput(DLayerInputs,bot[5])
 
     sortedOutputs = sorted(boardOutputs,reverse=True)
     columnPreferences = []
@@ -73,3 +94,15 @@ def runBot(boardInput,bot):
         boardOutputs[pos] = -1000
 
     return columnPreferences
+
+
+#boardInput = []
+#for x in range(42):
+#    boardInput += [random.choice([0])]
+#bot = createBotWeights()
+#runBot(boardInput,bot)
+
+
+
+
+
