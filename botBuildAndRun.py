@@ -65,9 +65,6 @@ def layerOutputToNextLayerInput(layerOutputs,layer):
     for o in range(len(layerOutputs)):
         for i in range(len(nextLayerInputs)):
             nextLayerInputs[i] += layerOutputs[o]*layer[o][i]
-#    if len(nextLayerInputs) != 7:
-#        for i in range(len(nextlayerInputs)):
-#            nextlayerInputs[i] = max(0,nextlayerInputs[i])
     return nextLayerInputs
 
 def layerInputToLayerOutput(layerInputs,layerBiases):
@@ -95,13 +92,13 @@ def runBot(boardInput,bot):
 
     return columnPreferences
 
-
-#boardInput = []
-#for x in range(42):
-#    boardInput += [random.choice([0])]
-#bot = createBotWeights()
-#runBot(boardInput,bot)
-
+'''
+boardInput = []
+for x in range(42):
+    boardInput += [random.choice([0])]
+bot = createBotWeights()
+runBot(boardInput,bot)
+'''
 
 
 
